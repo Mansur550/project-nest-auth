@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import { PropertController } from './property.controller';
 
-@Module({})
+@Module({
+    controllers: [PropertController]
+})
 export class PropertyModule { }
