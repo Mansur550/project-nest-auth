@@ -5,6 +5,7 @@ import { SignupDto } from './dto/signup.dto';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class AuthService {
@@ -38,28 +39,50 @@ export class AuthService {
   }
 
   //signup
-  async signUp(signupData: SignupDto) {
-
+  async signUp(signupData: SignupDto): Promise<{ message: string }> {
+    const { name, email, password } = signupData;
     //chek if email in use
     const emailInUse = await this.userRepo.findOne({
-      where: { email: signupData.email }
+      where: { email: email }
     });
     if (emailInUse) {
       throw new BadRequestException("Enail Already in Use");
     }
 
     //hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
 
     //create user and save in Database
-  }
+
+    const user = this.userRepo.create({
+      name: name,
+      email: email,
+      password: hashedPassword,
+
+    })
+
+    await this.userRepo.save(user);
+
+    // 5️⃣ Return a success message
+    return { message: 'User created successfully' };
 
 
 
 
-
-
-
+  };
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
