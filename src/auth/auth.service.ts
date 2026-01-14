@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { SignupDto } from './dto/signup.dto';
@@ -6,6 +6,7 @@ import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt'
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,8 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepo: Repository<User>
   ) { }
+
+
 
 
 
@@ -38,6 +41,9 @@ export class AuthService {
     return `This action removes a #${id} auth`;
   }
 
+
+
+
   //signup
   async signUp(signupData: SignupDto): Promise<{ message: string }> {
     const { name, email, password } = signupData;
@@ -51,8 +57,6 @@ export class AuthService {
 
     //hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-
-
     //create user and save in Database
 
     const user = this.userRepo.create({
@@ -64,25 +68,52 @@ export class AuthService {
 
     await this.userRepo.save(user);
 
-    // 5️⃣ Return a success message
+    // Return a success message
     return { message: 'User created successfully' };
-
-
-
-
   };
 
 
 
+
+
+
+
+  //LogIn
+  async login(credentials: LoginDto) {
+
+    const { email, password } = credentials;
+
+    //Find If user Exist
+    const user = await this.userRepo.findOne({
+      where: {
+        email: email
+      }
+    });
+    if (!user) {
+      throw new UnauthorizedException("Wrong email or password");
+    }
+    // compare password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      throw new UnauthorizedException("Wrong email or password");
+    }
+
+    //Generate JWT token 
+    return {
+      message: "success"
+    }
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
