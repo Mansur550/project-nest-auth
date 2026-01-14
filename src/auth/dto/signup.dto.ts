@@ -8,8 +8,7 @@ export class SignupDto {
     email: string;
 
     @IsString()
-    @IsAlphanumeric()
     @MinLength(6)
-    @Matches(/^(?=.[0-9])/, { message: 'Password must contain character and at least one number' })
+    @Matches(/^(?=.*\d)/, { message: 'Password must at least one number' })
     password: string;
 }
