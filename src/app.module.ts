@@ -8,23 +8,24 @@ import config from './auth/config/config'
 
 
 @Module({
+  // Load environment variables and custom config
   imports: [ConfigModule.forRoot({
     isGlobal: true,
     cache: true,
     load: [config],
-
   }),
-    AuthModule, TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '1234',
-      database: 'moderator',
-      autoLoadEntities: true,
-      synchronize: true
-    })
 
+  TypeOrmModule.forRoot({
+    type: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    username: 'postgres',
+    password: '1234',
+    database: 'moderator',
+    autoLoadEntities: true,
+    synchronize: true
+  }),
+    AuthModule
   ],
   controllers: [AppController,],
   providers: [AppService],
