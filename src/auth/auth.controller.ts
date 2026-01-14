@@ -40,6 +40,10 @@ export class AuthController {
   }
 
   //TODO POST Login 
+  @Post('login')
+  async login(@Body() credentials: LoginDto) {
+    return this.authService.login(credentials);
+  }
 
   //TODO POST Refresh token
 
