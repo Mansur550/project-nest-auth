@@ -98,9 +98,7 @@ export class AuthService {
 
     //Generate JWT token 
 
-    return {
-      message: "success"
-    };
+    return this.generateUserToken(user.id)
 
   }
 
