@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import config from './auth/config/config'
-import { JwtModule } from '@nestjs/jwt';
+
 
 
 @Module({
@@ -15,15 +15,7 @@ import { JwtModule } from '@nestjs/jwt';
     cache: true,
     load: [config],
   }),
-  JwtModule.registerAsync({
-    imports: [ConfigModule],          // ensure ConfigModule is imported
-    inject: [ConfigService],          // inject ConfigService
-    useFactory: async (configService: ConfigService) => ({
-      secret: configService.get<string>('jwt.secret'), // get JWT secret safely
-      // signOptions: { expiresIn: '1h' },               
-    }),
 
-  }),
 
   TypeOrmModule.forRoot({
     type: 'postgres',

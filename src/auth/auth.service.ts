@@ -103,16 +103,12 @@ export class AuthService {
   }
 
   //access token
-  async generateUserToken(userId) {
-    const accessToken = this.jwtService.sign({ userId }, { expiresIn: '1h' });
+  async generateUserToken(userId: number) {
+    const accessToken = this.jwtService.sign({ userId });
 
     return {
       accessToken,
     };
   }
-
-
-
-
 
 }
