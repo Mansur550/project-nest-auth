@@ -3,8 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import config from './auth/config/config'
+import { JwtModule } from '@nestjs/jwt';
 
 
 @Module({
@@ -13,6 +14,18 @@ import config from './auth/config/config'
     isGlobal: true,
     cache: true,
     load: [config],
+  }),
+  JwtModule.registerAsync({
+    imports: [ConfigModule],          // ensure ConfigModule is imported
+    // inject: [ConfigService],
+    // inject ConfigService
+    // useFactory: async (configService: ConfigService) => ({
+    //   secret: configService.get<string>('jwt.secret'), // get JWT secret safely
+    //   signOptions: { expiresIn: '1h' },               // optional expiration
+    // }),
+    useFactory: async (config) => ({
+      secret: config.get('jwt.secret'),
+    })
   }),
 
   TypeOrmModule.forRoot({
