@@ -19,11 +19,6 @@ export class AuthService {
   ) { }
 
 
-
-
-
-
-
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
   }
@@ -102,18 +97,21 @@ export class AuthService {
     }
 
     //Generate JWT token 
+
     return {
       message: "success"
-    }
-
+    };
 
   }
 
+  //access token
+  async generateUserToken(userId) {
+    const accessToken = this.jwtService.sign({ userId }, { expiresIn: '1h' });
 
-
-
-
-
+    return {
+      accessToken,
+    };
+  }
 
 
 

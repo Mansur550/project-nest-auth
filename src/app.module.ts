@@ -17,15 +17,12 @@ import { JwtModule } from '@nestjs/jwt';
   }),
   JwtModule.registerAsync({
     imports: [ConfigModule],          // ensure ConfigModule is imported
-    // inject: [ConfigService],
-    // inject ConfigService
-    // useFactory: async (configService: ConfigService) => ({
-    //   secret: configService.get<string>('jwt.secret'), // get JWT secret safely
-    //   signOptions: { expiresIn: '1h' },               // optional expiration
-    // }),
-    useFactory: async (config) => ({
-      secret: config.get('jwt.secret'),
-    })
+    inject: [ConfigService],          // inject ConfigService
+    useFactory: async (configService: ConfigService) => ({
+      secret: configService.get<string>('jwt.secret'), // get JWT secret safely
+      // signOptions: { expiresIn: '1h' },               
+    }),
+
   }),
 
   TypeOrmModule.forRoot({
