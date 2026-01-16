@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { SignupDto } from './dto/signup.dto';
@@ -16,6 +16,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>, private jwtService: JwtService,
+    @Inject('REFRESH_SECRET') private readonly refreshSecret: string,
   ) { }
 
 
@@ -111,10 +112,9 @@ export class AuthService {
       { expiresIn: '15m' }
 
     );
-    const refreshToken = this.jwtService.sign(
-      //{ userId },
-      payload,
+    const refreshToken = this.jwtService.sign(payload,
       {
+        secret: this.refreshSecret,
         expiresIn: '7d',
       }
     );
@@ -123,5 +123,25 @@ export class AuthService {
       refreshToken,
     };
   }
+
+  verifyRefreshToken(token: string) {
+    try {
+      return this.jwtService.verify(token, {
+        secret: this.refreshSecret,
+      });
+    } catch (err) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  createAccessToken(userId: number) {
+    return this.jwtService.sign(
+      { userId },
+      { expiresIn: '15m' }
+    );
+  }
+
+
+
 
 }

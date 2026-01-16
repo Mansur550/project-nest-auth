@@ -15,7 +15,8 @@ const { jwt } = config();
   }),
   ],
   controllers: [AuthController],
-  providers: [AuthService,
+  providers: [
+    AuthService,
     {
       provide: 'REFRESH_SECRET',
       useValue: jwt.refreshSecret, // read from config.ts

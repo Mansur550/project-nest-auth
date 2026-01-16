@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { Res } from '@nestjs/common';
+import { Req } from '@nestjs/common';
 import type { Response } from 'express';
+import type { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -35,14 +37,14 @@ export class AuthController {
   remove(@Param('id') id: string) {
     return this.authService.remove(+id);
   }
-  //TODO: POST Signup
+  // POST Signup
   @Post('signup')
   async signUp(@Body() signupData: SignupDto) {
     return this.authService.signUp(signupData);
 
   }
 
-  //TODO POST Login 
+  // POST Login 
   @Post('login')
   async login(@Body() credentials: LoginDto,
     @Res({ passthrough: true }) res: Response,
@@ -59,7 +61,23 @@ export class AuthController {
     })
     return { accessToken };
 
-    // return this.authService.login(credentials);
+  }
+
+
+
+  @Post('refresh')
+  async refresh(@Req() req: Request) {
+    const refreshToken = req.cookies?.refresh_token;
+
+    if (!refreshToken) {
+      throw new UnauthorizedException('No refresh token');
+    }
+
+    const payload = this.authService.verifyRefreshToken(refreshToken);
+
+    const accessToken = this.authService.createAccessToken(payload.userId);
+
+    return { accessToken };
   }
 
 
