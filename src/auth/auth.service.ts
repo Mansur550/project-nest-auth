@@ -106,8 +106,16 @@ export class AuthService {
   async generateUserToken(userId: number) {
     const accessToken = this.jwtService.sign({ userId });
 
+    const refreshToken = this.jwtService.sign(
+      { userId },
+      {
+        secret: 'refresh-secret',
+        expiresIn: '7d',
+      }
+    );
     return {
       accessToken,
+      refreshToken,
     };
   }
 
