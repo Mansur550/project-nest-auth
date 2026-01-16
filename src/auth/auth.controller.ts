@@ -52,6 +52,13 @@ export class AuthController {
     const { accessToken, refreshToken } =
       await this.authService.login(credentials);
 
+    res.cookie('access_token', accessToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: false,
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
