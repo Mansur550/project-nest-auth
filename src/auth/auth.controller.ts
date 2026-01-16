@@ -4,6 +4,8 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
+import { Res } from '@nestjs/common';
+import type { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -42,11 +44,25 @@ export class AuthController {
 
   //TODO POST Login 
   @Post('login')
-  async login(@Body() credentials: LoginDto) {
-    return this.authService.login(credentials);
+  async login(@Body() credentials: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const { accessToken, refreshToken } =
+      await this.authService.login(credentials);
+
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: false,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+
+    })
+    return { accessToken };
+
+    // return this.authService.login(credentials);
   }
 
-  //TODO POST Refresh token
+
 
 
 

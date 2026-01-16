@@ -104,12 +104,17 @@ export class AuthService {
 
   //access token
   async generateUserToken(userId: number) {
-    const accessToken = this.jwtService.sign({ userId });
+    const payload = { sub: userId };
+    const accessToken = this.jwtService.sign(
+      //{ userId }
+      payload,
+      { expiresIn: '15m' }
 
+    );
     const refreshToken = this.jwtService.sign(
-      { userId },
+      //{ userId },
+      payload,
       {
-        secret: 'refresh-secret',
         expiresIn: '7d',
       }
     );
