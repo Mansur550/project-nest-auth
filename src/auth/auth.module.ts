@@ -12,7 +12,7 @@ const { jwt } = config();
 @Module({
   imports: [TypeOrmModule.forFeature([User]),
   JwtModule.register({
-    secret: 'dev-secret',
+    secret: jwt.secret,
   }),
   ],
   controllers: [AuthController, ProfileController],
