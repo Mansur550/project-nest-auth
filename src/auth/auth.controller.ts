@@ -65,15 +65,15 @@ export class AuthController {
       secure: false,
       maxAge: 7 * 24 * 60 * 60 * 1000,
 
-    })
-    return { accessToken };
+    });
+    return { message: 'Login successful' };
 
   }
 
 
 
   @Post('refresh')
-  async refresh(@Req() req: Request) {
+  async refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const refreshToken = req.cookies?.refresh_token;
 
     if (!refreshToken) {
@@ -81,10 +81,17 @@ export class AuthController {
     }
 
     const payload = this.authService.verifyRefreshToken(refreshToken);
+    const newAccessToken = this.authService.createAccessToken(payload.userId);
 
-    const accessToken = this.authService.createAccessToken(payload.userId);
+    // update access_token cookie
+    res.cookie('access_token', newAccessToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: false,
+      maxAge: 15 * 60 * 1000,
+    });
 
-    return { accessToken };
+    return { message: 'Access token refreshed' };
   }
 
 
