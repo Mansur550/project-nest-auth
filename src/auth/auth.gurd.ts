@@ -19,8 +19,9 @@ export class AuthGurd implements CanActivate {
             req['user'] = payload; //attach user info
             return true;
 
-        } catch (error) {
+        } catch {
 
+            throw new UnauthorizedException('Invalid or expired tokken');
         }
 
 
