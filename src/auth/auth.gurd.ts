@@ -15,6 +15,9 @@ export class AuthGurd implements CanActivate {
         if (!token)
             throw new UnauthorizedException('No access token found');
         try {
+            const payload = await this.jwtService.verifyAsync(token, { secret: process.env.JWT_SECRET });
+            req['user'] = payload; //attach user info
+            return true;
 
         } catch (error) {
 
