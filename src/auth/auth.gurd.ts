@@ -12,6 +12,12 @@ export class AuthGurd implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest<Request>();
         const token = req.cookies?.access_token;
+        if (!token)
+            try {
+
+            } catch (error) {
+
+            }
 
 
     }
