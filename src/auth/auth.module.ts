@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import config from './config/config'
+import { ProfileController } from './profile.controller';
 
 const { jwt } = config();
 
@@ -14,7 +15,7 @@ const { jwt } = config();
     secret: 'dev-secret',
   }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, ProfileController],
   providers: [
     AuthService,
     {
