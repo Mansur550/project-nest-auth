@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { SignupDto } from './dto/signup.dto';
@@ -20,26 +20,31 @@ export class AuthService {
   ) { }
 
 
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  //get all users
+  async findAll() {
+    return this.userRepo.find({
+      select: ['id', 'name', 'email'], // never return password
+    });
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+  //get user by id
+  async findOne(id: number) {
+    const user = await this.userRepo.findOne({
+      where: { id },
+      select: ['id', 'name', 'email'],
+    });
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    return user;
   }
 
   remove(id: number) {
     return `This action removes a #${id} auth`;
   }
-
 
 
 
@@ -119,6 +124,7 @@ export class AuthService {
       {
         secret: this.refreshSecret,
         expiresIn: '7d',
+
       }
     );
     return {

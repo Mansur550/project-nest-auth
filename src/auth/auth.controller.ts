@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
@@ -8,6 +8,9 @@ import { Res } from '@nestjs/common';
 import { Req } from '@nestjs/common';
 import type { Response } from 'express';
 import type { Request } from 'express';
+import { AuthGuard } from './auth.guard';
+
+
 
 @Controller('auth')
 export class AuthController {
@@ -19,21 +22,24 @@ export class AuthController {
   // }
 
   @Get()
+
+  @UseGuards(AuthGuard)
   findAll() {
     return this.authService.findAll();
   }
-
-  @Get(':id')
+  @UseGuards(AuthGuard)
+  @Get('id/:id')
   findOne(@Param('id') id: string) {
     return this.authService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch('/update/:id')
   update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
     return this.authService.update(+id, updateAuthDto);
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
   remove(@Param('id') id: string) {
     return this.authService.remove(+id);
   }
