@@ -65,9 +65,19 @@ export class AuthService {
       message: 'User updated successfully',
     };
   }
+  //remove user
+  async remove(id: number) {
+    const user = await this.userRepo.findOne({ where: { id } });
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    await this.userRepo.remove(user);
+
+    return {
+      message: 'User deleted successfully',
+    };
   }
 
 
