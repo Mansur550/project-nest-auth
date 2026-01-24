@@ -42,6 +42,30 @@ export class AuthService {
     return user;
   }
 
+
+  //update user
+  async update(id: number, updateAuthDto: UpdateAuthDto) {
+    const user = await this.userRepo.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    if (updateAuthDto.password) {
+      updateAuthDto.password = await bcrypt.hash(
+        updateAuthDto.password,
+        10,
+      );
+    }
+
+    Object.assign(user, updateAuthDto);
+    await this.userRepo.save(user);
+
+    return {
+      message: 'User updated successfully',
+    };
+  }
+
   remove(id: number) {
     return `This action removes a #${id} auth`;
   }

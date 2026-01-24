@@ -32,11 +32,14 @@ export class AuthController {
   findOne(@Param('id') id: string) {
     return this.authService.findOne(+id);
   }
-
-  @Patch('/update/:id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
+  @Patch('update/:id')
+  update(
+    @Param('id') id: number,
+    @Body() updateAuthDto: UpdateAuthDto,
+  ) {
+    return this.authService.update(id, updateAuthDto);
   }
+
 
   @Delete(':id')
   @UseGuards(AuthGuard)
