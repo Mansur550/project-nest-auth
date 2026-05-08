@@ -1,98 +1,286 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🚀 Secure Authentication & Authorization System with NestJS
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<div align="center">
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge\&logo=nestjs\&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge\&logo=typescript\&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge\&logo=postgresql\&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge\&logo=jsonwebtokens\&logoColor=white)
+![TypeORM](https://img.shields.io/badge/TypeORM-FE0803?style=for-the-badge)
+![bcrypt](https://img.shields.io/badge/bcrypt-secure-green?style=for-the-badge)
 
-## Description
+### 🔐 Production-Ready Authentication & Authorization Backend
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A secure and scalable backend authentication system built with **NestJS**, implementing industry-standard security practices including **JWT Authentication**, **Refresh Tokens**, **HTTP-only Cookies**, and **Role-Based Authorization**.
 
-## Project setup
+</div>
 
-```bash
-$ npm install
+---
+
+# 📌 Overview
+
+This project demonstrates how modern authentication systems are built in real-world applications using clean architecture principles and secure backend practices.
+
+The system includes:
+
+* 🔑 JWT Authentication
+* 🔄 Access & Refresh Token Flow
+* 🍪 HTTP-only Cookie Security
+* 🛡️ Route Protection with Custom Guards
+* 🔐 Password Hashing with bcrypt
+* 🗄️ PostgreSQL + TypeORM Integration
+* 👤 User CRUD Operations
+* ⚡ Scalable NestJS Architecture
+
+---
+
+# ✨ Features
+
+## 🔐 Authentication System
+
+* User Signup & Login
+* JWT Access Token Authentication
+* Refresh Token Mechanism
+* Secure Logout System
+* Password Encryption using bcrypt
+
+## 🛡️ Authorization & Security
+
+* Protected Routes with Custom AuthGuard
+* HTTP-only Cookies for Token Storage
+* Role & Ownership Based Authorization
+* Token Expiration Handling
+* Validation & Exception Handling
+
+## 🗄️ Database & Backend
+
+* PostgreSQL Database Integration
+* TypeORM ORM Support
+* Clean Modular Folder Structure
+* DTO Validation using class-validator
+* Environment Variable Configuration
+
+---
+
+# 🏗️ Tech Stack
+
+| Technology | Purpose             |
+| ---------- | ------------------- |
+| NestJS     | Backend Framework   |
+| TypeScript | Type Safety         |
+| PostgreSQL | Relational Database |
+| TypeORM    | ORM                 |
+| JWT        | Authentication      |
+| bcrypt     | Password Hashing    |
+| Express    | HTTP Server         |
+
+---
+
+# 🔄 Authentication Flow
+
+```mermaid
+flowchart TD
+
+A[User Signup/Login] --> B[Validate Credentials]
+B --> C[Generate Access Token]
+B --> D[Generate Refresh Token]
+
+C --> E[Store Access Token in HTTP-only Cookie]
+D --> F[Store Refresh Token in HTTP-only Cookie]
+
+E --> G[Access Protected Routes]
+
+G --> H{Access Token Expired?}
+
+H -- No --> I[Continue Request]
+
+H -- Yes --> J[Use Refresh Token]
+J --> K[Generate New Access Token]
+K --> G
 ```
 
-## Compile and run the project
+---
+
+# 📂 Project Structure
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+src/
+│
+├── auth/
+│   ├── guards/
+│   ├── dto/
+│   ├── strategies/
+│   ├── auth.controller.ts
+│   ├── auth.service.ts
+│   └── auth.module.ts
+│
+├── users/
+│   ├── dto/
+│   ├── entities/
+│   ├── users.controller.ts
+│   ├── users.service.ts
+│   └── users.module.ts
+│
+├── common/
+│   ├── guards/
+│   ├── decorators/
+│   └── filters/
+│
+├── database/
+│
+├── app.module.ts
+└── main.ts
 ```
 
-## Run tests
+---
+
+# 🔑 Core Security Features
+
+## ✅ JWT Authentication
+
+* Short-lived Access Tokens (15 minutes)
+* Long-lived Refresh Tokens (7 days)
+
+## 🍪 HTTP-only Cookies
+
+Tokens are securely stored in HTTP-only cookies to help protect against:
+
+* XSS Attacks
+* Client-side token exposure
+* Token theft via JavaScript
+
+## 🔐 Password Hashing
+
+Passwords are hashed using bcrypt before being stored in the database.
+
+---
+
+# 🛠️ Installation & Setup
+
+## 1️⃣ Clone the Repository
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+git clone <your-repository-url>
+cd <project-folder>
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 2️⃣ Install Dependencies
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm install
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 3️⃣ Configure Environment Variables
 
-## Resources
+Create a `.env` file:
 
-Check out a few resources that may come in handy when working with NestJS:
+```env
+PORT=3000
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=postgres
+DATABASE_PASSWORD=your_password
+DATABASE_NAME=auth_system
 
-## Support
+JWT_SECRET=your_jwt_secret
+JWT_REFRESH_SECRET=your_refresh_secret
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 4️⃣ Run the Project
 
-## Stay in touch
+```bash
+npm run start:dev
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+---
 
-## License
+# 📡 API Endpoints
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+| Method | Endpoint        | Description          |
+| ------ | --------------- | -------------------- |
+| POST   | `/auth/signup`  | Register User        |
+| POST   | `/auth/login`   | Login User           |
+| POST   | `/auth/refresh` | Refresh Access Token |
+| POST   | `/auth/logout`  | Logout User          |
+| GET    | `/users`        | Get All Users        |
+| GET    | `/users/:id`    | Get User By ID       |
+| PATCH  | `/users/:id`    | Update User          |
+| DELETE | `/users/:id`    | Delete User          |
+
+---
+
+# 🧠 What I Learned
+
+This project helped me gain hands-on experience with:
+
+* Building secure authentication systems
+* Creating custom NestJS Guards
+* Implementing refresh token workflows
+* Secure cookie-based authentication
+* Structuring scalable backend applications
+* PostgreSQL + TypeORM best practices
+* Validation and error handling patterns
+
+---
+
+# 🚀 Production-Ready Concepts Implemented
+
+✅ Secure JWT Handling
+✅ Cookie-based Authentication
+✅ Token Rotation Logic
+✅ Modular Architecture
+✅ Route Protection
+✅ Scalable Folder Structure
+✅ Environment-based Configuration
+✅ Clean Code Principles
+
+---
+
+# 📸 Future Improvements
+
+* 🔐 Role-Based Access Control (RBAC)
+* 📧 Email Verification
+* 🔄 Refresh Token Rotation
+* 🧪 Unit & E2E Testing
+* 📊 API Documentation with Swagger
+* 🐳 Docker Support
+* ☁️ Deployment with CI/CD
+
+---
+
+# 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome.
+
+Feel free to fork the project and submit a pull request.
+
+---
+
+# ⭐ Support
+
+If you found this project useful:
+
+* ⭐ Star this repository
+* 🍴 Fork the project
+* 📢 Share it with others
+
+---
+
+# 👨‍💻 Author
+
+### Your Name
+
+Backend Developer • NestJS Enthusiast • Security-Focused Developer
+
+GitHub: `https://github.com/your-username`
+
+---
+
+<div align="center">
+
+### 🔥 Building Secure & Scalable Backend Systems
+
+Made with ❤️ using NestJS & TypeScript
+
+</div>
